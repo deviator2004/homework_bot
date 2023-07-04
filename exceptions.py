@@ -1,4 +1,10 @@
-class EnvIsNoneError(Exception):
+class NotSendingMessageError(Exception):
+    """Исключения, не требующие отправки сообщения в Telegram."""
+
+    pass
+
+
+class EnvIsNoneError(NotSendingMessageError):
     """Исключение при отсутствии переменных среды."""
 
     pass
