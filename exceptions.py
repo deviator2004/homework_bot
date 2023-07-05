@@ -4,12 +4,6 @@ class NotSendingMessageError(Exception):
     pass
 
 
-class EnvIsNoneError(NotSendingMessageError):
-    """Исключение при отсутствии переменных среды."""
-
-    pass
-
-
 class Error404(Exception):
     """Исключение при сбое доступа к API."""
 
