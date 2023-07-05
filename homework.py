@@ -33,31 +33,31 @@ def check_tokens():
     """Проверяет наличие переменных окружения."""
     for env in [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]:
         if env is None:
-            logger.critical('Отсутствует обязательная переменная окружения: ',
-                            f'{env}. Программа принудительно остановлена.')
+            logging.critical('Отсутствует обязательная переменная окружения: ',
+                             f'{env}. Программа принудительно остановлена.')
             sys.exit(f'Отсутствует переменная окружения {env}')
 
 
 def send_message(bot, message):
     """Отправляет сообщение в чат."""
     try:
-        logger.debug('Начата отправка сообщения в Telegram')
+        logging.debug('Начата отправка сообщения в Telegram')
         bot.send_message(TELEGRAM_CHAT_ID, message)
-        logger.debug(f'Бот отправил сообщение :{message}')
+        logging.debug(f'Бот отправил сообщение :{message}')
     except Exception as error:
-        logger.error(f'Сбой при отправке сообщения в Telegram: {error}')
+        logging.error(f'Сбой при отправке сообщения в Telegram: {error}')
 
 
 def get_api_answer(timestamp):
     """Делает запрос к API."""
     payload = {'from_date': timestamp}
     try:
-        logger.debug('Начато выполнение запроса к API')
+        logging.debug('Начато выполнение запроса к API')
         request = requests.get(ENDPOINT, headers=HEADERS, params=payload)
     except requests.RequestException as error:
-        logger.critical(f'Сбой в работе программы: {error}. '
-                        f'Параметры запроса: URL: {ENDPOINT}, '
-                        f'Headers: {HEADERS}, Payload: {payload}')
+        logging.critical(f'Сбой в работе программы: {error}. '
+                         f'Параметры запроса: URL: {ENDPOINT}, '
+                         f'Headers: {HEADERS}, Payload: {payload}')
     if request.status_code == HTTPStatus.OK:
         return request.json()
     elif request.status_code == HTTPStatus.NOT_FOUND:
@@ -69,7 +69,7 @@ def get_api_answer(timestamp):
 
 def check_response(response):
     """Проверяет ответ от API на соответствие типу."""
-    logger.debug('Начата проверка ответа сервиса')
+    logging.debug('Начата проверка ответа сервиса')
     if not isinstance(response, dict):
         raise TypeError(f'Тип данных ответа: {type(response)}, '
                         'ожидается <class dict>')
@@ -113,10 +113,10 @@ def main():
                 send_message(bot, message)
                 previous_message = message
         except ex.NotSendingMessageError as message:
-            logger.debug(message)
+            logging.debug(message)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            logger.error(message)
+            logging.error(message)
             if message != previous_message:
                 send_message(bot, message)
                 previous_message = message
@@ -130,12 +130,4 @@ if __name__ == '__main__':
         level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler(sys.stdout)
-    logger.addHandler(handler)
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s'
-    )
-    handler.setFormatter(formatter)
     main()
