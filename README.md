@@ -20,3 +20,6 @@ pip install -r requirements.txt
 ```
 
 #### После этого можно запускать в терминале файл homework.py - бот начнет работу
+
+## Над проектом работал:
+- [Дмитрий Латыпов](https://github.com/deviator2004)
