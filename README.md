@@ -17,5 +17,6 @@ Python 3.9, DjangoRestFramework, logger
 
 ```bash
 pip install -r requirements.txt
+```
 
 ## После этого можно запускать в терминале файл homework.py - бот начнет работу
